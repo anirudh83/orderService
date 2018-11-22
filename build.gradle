@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.1.0.RELEASE'
+		springBootVersion = '2.0.6.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -22,13 +22,21 @@ sourceCompatibility = 1.8
 repositories {
 	mavenCentral()
 }
-
+ext {
+	springCloudVersion = 'Finchley.SR2'
+}
 
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
 	runtimeOnly('org.postgresql:postgresql')
 	compileOnly 'org.projectlombok:lombok:1.18.4'
 	compile("com.h2database:h2")
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }

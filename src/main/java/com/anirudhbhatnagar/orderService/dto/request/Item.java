@@ -6,6 +6,6 @@ import java.math.BigDecimal;
 
 @Getter
 public class Item {
-    private String productId;
+    private Long productId;
     private BigDecimal quantity;
 }

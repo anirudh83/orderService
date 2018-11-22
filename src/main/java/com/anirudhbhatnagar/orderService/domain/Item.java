@@ -20,6 +20,6 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String productId;
+    private Long productId;
     private BigDecimal quantity;
 }

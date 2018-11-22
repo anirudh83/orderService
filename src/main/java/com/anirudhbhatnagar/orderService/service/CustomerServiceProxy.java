@@ -1,4 +1,7 @@
 package com.anirudhbhatnagar.orderService.service;
 
-public class CustomerServiceProxy {
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name = "permissions-service", url = "localhost:8000")
+public interface CustomerServiceProxy {
 }

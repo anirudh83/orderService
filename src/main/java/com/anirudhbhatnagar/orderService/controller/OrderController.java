@@ -5,6 +5,7 @@ import com.anirudhbhatnagar.orderService.domain.Order;
 import com.anirudhbhatnagar.orderService.dto.order.CustomerOrderDetails;
 import com.anirudhbhatnagar.orderService.dto.request.CustomerOrderRequest;
 import com.anirudhbhatnagar.orderService.repository.OrderRepository;
+import com.anirudhbhatnagar.orderService.service.ProductServiceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,10 +21,12 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     private OrderRepository orderRepository;
+    private ProductServiceProxy productServiceProxy;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository) {
+    public OrderController(OrderRepository orderRepository, ProductServiceProxy productServiceProxy) {
         this.orderRepository = orderRepository;
+        this.productServiceProxy = productServiceProxy;
     }
 
     @GetMapping("/orders")
@@ -36,7 +39,18 @@ public class OrderController {
         return CustomerOrderDetails.builder()
                 .createdDate(order.getCreatedDate())
                 .externalReference(order.getExternalReference())
+                .items(toItemList(order.getItems()))
                 .build();
+    }
+
+    private List<com.anirudhbhatnagar.orderService.dto.product.Item> toItemList(List<Item> items) {
+        return items.stream().map(item -> toItemDto(item)).collect(Collectors.toList());
+    }
+
+    private com.anirudhbhatnagar.orderService.dto.product.Item toItemDto(Item item) {
+        return com.anirudhbhatnagar.orderService.dto.product.Item
+                .builder()
+                .product(productServiceProxy.getProduct(item.getProductId())).build();
     }
 
     @GetMapping("/orders/{id}")
