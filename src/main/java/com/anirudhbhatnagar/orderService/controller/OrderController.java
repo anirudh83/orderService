@@ -29,7 +29,14 @@ public class OrderController {
     @GetMapping("/orders")
     public List<CustomerOrderDetails> getCustomerOrders(@RequestParam String customerId) {
         final List<Order> order = orderRepository.findByCustomerId(customerId);
-        return null;
+        return order.stream().map(o -> toCustomerOrderDetails(o)).collect(Collectors.toList());
+    }
+
+    private CustomerOrderDetails toCustomerOrderDetails(Order order) {
+        return CustomerOrderDetails.builder()
+                .createdDate(order.getCreatedDate())
+                .externalReference(order.getExternalReference())
+                .build();
     }
 
     @GetMapping("/orders/{id}")
@@ -43,7 +50,7 @@ public class OrderController {
                 .builder()
                 .customerId(request.getCustomerId())
                 .externalReference(request.getExternalReference())
-                .items(toItems(request.getItems())).build());
+                .items((request.getItems() == null) ? null : toItems(request.getItems())).build());
     }
 
     private List<Item> toItems(List<com.anirudhbhatnagar.orderService.dto.request.Item> items) {

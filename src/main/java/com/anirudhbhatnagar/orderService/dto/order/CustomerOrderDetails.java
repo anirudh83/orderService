@@ -2,10 +2,14 @@ package com.anirudhbhatnagar.orderService.dto.order;
 
 import com.anirudhbhatnagar.orderService.dto.customer.Customer;
 import com.anirudhbhatnagar.orderService.dto.product.Item;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
+@Getter
 public class CustomerOrderDetails {
 
     private String orderId;
