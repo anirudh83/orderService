@@ -35,8 +35,18 @@ public class OrderController {
         return order.stream().map(o -> toCustomerOrderDetails(o)).collect(Collectors.toList());
     }
 
+    @GetMapping("/orders/{id}")
+    public CustomerOrderDetails getOrders(@PathVariable("id") Long orderId) {
+        final Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return null;
+        }
+        return toCustomerOrderDetails(order);
+    }
+
     private CustomerOrderDetails toCustomerOrderDetails(Order order) {
         return CustomerOrderDetails.builder()
+                .orderId(order.getId())
                 .createdDate(order.getCreatedDate())
                 .externalReference(order.getExternalReference())
                 .items(toItemList(order.getItems()))
@@ -51,11 +61,6 @@ public class OrderController {
         return com.anirudhbhatnagar.orderService.dto.product.Item
                 .builder()
                 .product(productServiceProxy.getProduct(item.getProductId())).build();
-    }
-
-    @GetMapping("/orders/{id}")
-    public Order getOrders(@PathVariable("id") Long orderId) {
-        return orderRepository.findById(orderId).orElse(null);
     }
 
     @PostMapping("/orders")

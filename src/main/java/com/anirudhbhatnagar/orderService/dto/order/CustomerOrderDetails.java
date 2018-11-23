@@ -15,7 +15,7 @@ import java.util.List;
 @ToString
 public class CustomerOrderDetails {
 
-    private String orderId;
+    private Long orderId;
     private String externalReference;
     private Customer customer;
     private LocalDateTime createdDate;
