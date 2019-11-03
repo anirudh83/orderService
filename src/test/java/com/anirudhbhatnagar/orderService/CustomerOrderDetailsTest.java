@@ -15,7 +15,7 @@ public class CustomerOrderDetailsTest {
     @Test
     public void test() throws JsonProcessingException {
         final CustomerOrderDetails customer = CustomerOrderDetails.builder()
-                .orderId("1234")
+                .orderId(1234l)
                 .externalReference("234257hf")
                 .customer(Customer.builder()
                         .firstName("anirudh")
